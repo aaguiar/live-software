@@ -3,9 +3,9 @@ import './App.css';
 
 import Canvas from './components/canvas';
 
-function App() {
+const App: React.FC = () => {
   return (
-    <Canvas />
+    <Canvas message="Hello" />
   );
 }
 
