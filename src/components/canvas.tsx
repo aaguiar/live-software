@@ -1,7 +1,7 @@
 import React, { Component, Props } from 'react';
 import District from '../objects/district';
 
-import { getStaticDataProject } from '../api/repository';
+import { getStaticDataProject, sample } from '../api/repository';
 
 import * as THREE from 'three';
 
@@ -10,6 +10,7 @@ type CanvasProps = {
 };
 
 type CanvasState = {
+  projectName: "",
   project: {}
 }
 
