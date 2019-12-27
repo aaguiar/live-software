@@ -1,0 +1,42 @@
+{
+    "allProjectData": [
+        {
+            "num_packages": 1,
+            "project_name": "Maze",
+            "packages": [
+                {
+                    "package_name": "maze.cli",
+                    "class_count": 1,
+                    "i_classes": [
+                        {
+                            "class_name": "Interface",
+                            "class_hash": "1f1cc557b0ed181f8fds84tyt0bc74ceed73e7bbf4278cebf4ba0e43d0f3ff465fda9c",
+                            "lines_of_code": 99,
+                            "i_methods": [
+                                {
+                                    "argument_count": 1,
+                                    "method_name": "main",
+                                    "method_count": 1,
+                                    "arguments": [
+                                        {
+                                            "argumentName": "args",
+                                            "attribute_type": "String[]"
+                                        }
+                                    ],
+                                    "returnattribute_type": "void"
+                                }
+                            ],
+                            "attribute_count": 1,
+                            "class_attributes": [
+                                {
+                                    "attribute_name": "Move",
+                                    "attribute_type": "int"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
