@@ -1,9 +1,10 @@
 import React, { Component, Props } from 'react';
-import District from '../objects/district';
+import City from '../objects/city';
 
 import { getStaticDataProject, sample } from '../api/repository';
 
 import * as THREE from 'three';
+import ProjectJson from '../objects/interfaces/projectJson';
 
 type CanvasProps = {
   message: string;
@@ -35,7 +36,9 @@ class ThreeScene extends Component<CanvasProps, CanvasState> {
 
   componentDidMount() {
     getStaticDataProject()
-      .then(data => {
+      .then((data: ProjectJson) => {
+        let projectData: ProjectJson = sample.allProjectData[0];
+        let city: City = new City(projectData);
         this.setState({ project: data })
       })
 
