@@ -1,4 +1,5 @@
 import React, { Component, Props } from 'react';
+import Load from './load';
 import City from '../objects/city';
 
 import { getStaticDataProject, sample } from '../api/repository';
@@ -11,8 +12,8 @@ type CanvasProps = {
 };
 
 type CanvasState = {
-  projectName: "",
-  project: {}
+  project: {},
+  loadingProject: false
 }
 
 let mount: any;
@@ -54,7 +55,7 @@ class ThreeScene extends Component<CanvasProps, CanvasState> {
     this.camera.position.z = 4    //ADD RENDERER
     this.renderer.setClearColor('#000000')
     this.renderer.setSize(width, height)
-    mount.appendChild(this.renderer.domElement)    //ADD CUBE
+    //mount.appendChild(this.renderer.domElement)    //ADD CUBE
     //this.scene.add(this.cube)
     this.start()
   }
@@ -87,8 +88,14 @@ class ThreeScene extends Component<CanvasProps, CanvasState> {
 
   render() {
     return (
-      <div ref={ref => (mount = ref)} />
-    )
+      <div>
+         {!this.state.loadingProject ? (
+            <Load />
+         ) : (
+          <div ref={ref => (mount = ref)} />
+         )}
+      </div>
+   )
   }
 }
 
