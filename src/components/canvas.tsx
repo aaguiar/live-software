@@ -55,7 +55,7 @@ class ThreeScene extends Component<CanvasProps, CanvasState> {
       1000
     )
     this.camera.position.z = 4    //ADD RENDERER
-    this.renderer.setClearColor('#000000')
+    this.renderer.setClearColor('#00171f')
     this.renderer.setSize(width, height)
     mount.appendChild(this.renderer.domElement)    //ADD CUBE
     //this.scene.add(this.cube)

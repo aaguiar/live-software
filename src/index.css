@@ -13,5 +13,11 @@ code {
 }
 
 #load-proj {
+  background-color: #00171f;
+  color: white;
+}
+
+#load-proj > div {
+  text-align: center;
   margin: auto;
 }

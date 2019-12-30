@@ -3,7 +3,10 @@ import ReactLoading from 'react-loading';
 
 const Load = () => (
     <div id="load-proj">
-        <ReactLoading type={"bars"} color={"#111111"} />
+        <ReactLoading type={"bars"} color={"white"} />
+        <div>
+            Loading your project
+        </div>
     </div>
 );
 
