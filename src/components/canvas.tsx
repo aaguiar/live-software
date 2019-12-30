@@ -12,8 +12,8 @@ type CanvasProps = {
 };
 
 type CanvasState = {
-  project: {},
-  loadingProject: false
+  project?: {},
+  loadingProject: boolean
 }
 
 let mount: any;
@@ -32,7 +32,9 @@ class ThreeScene extends Component<CanvasProps, CanvasState> {
     this.frameId = requestAnimationFrame(this.animate);
     //this.cube = new District('', 1, 1, 1);
 
-    this.state = state;
+    this.state = {
+      loadingProject: true
+    };
   }
 
   componentDidMount() {
@@ -55,7 +57,7 @@ class ThreeScene extends Component<CanvasProps, CanvasState> {
     this.camera.position.z = 4    //ADD RENDERER
     this.renderer.setClearColor('#000000')
     this.renderer.setSize(width, height)
-    //mount.appendChild(this.renderer.domElement)    //ADD CUBE
+    mount.appendChild(this.renderer.domElement)    //ADD CUBE
     //this.scene.add(this.cube)
     this.start()
   }
@@ -88,12 +90,10 @@ class ThreeScene extends Component<CanvasProps, CanvasState> {
 
   render() {
     return (
-      <div>
-         {!this.state.loadingProject ? (
+      <div ref={ref => (mount = ref)}>
+        {this.state.loadingProject ? (
             <Load />
-         ) : (
-          <div ref={ref => (mount = ref)} />
-         )}
+         ) : (null)}
       </div>
    )
   }
