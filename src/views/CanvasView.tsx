@@ -2,7 +2,7 @@ import React from 'react';
 import Interface from '../components/canvas';
 
 const CanvasView = () => (
-    <Interface message="Hello" />
+    <Interface projectId={1} />
 );
 
 export default CanvasView;

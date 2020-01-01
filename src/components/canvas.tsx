@@ -1,4 +1,5 @@
 import React, { Component, Props } from 'react';
+import { useParams } from "react-router";
 import Load from './load';
 import City from '../objects/city';
 
@@ -8,7 +9,7 @@ import * as THREE from 'three';
 import ProjectJson from '../objects/interfaces/projectJson';
 
 type CanvasProps = {
-  message: string;
+  projectId: number;
 };
 
 type CanvasState = {
