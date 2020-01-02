@@ -16,7 +16,6 @@ const App: React.FC = () => {
   }
 
   let pushToCanvasPage = () => {
-    console.log("Go");
     history.push(`/canvas/${projectId}`);
   }
 
