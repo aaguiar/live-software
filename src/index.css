@@ -21,3 +21,15 @@ code {
   text-align: center;
   margin: auto;
 }
+
+#slct-proj {
+  margin-top: 20%;
+}
+
+#slct-proj > * {
+  color: #00171f;
+  font-size: 1.1em;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
