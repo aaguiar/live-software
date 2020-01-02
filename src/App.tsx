@@ -6,7 +6,6 @@ import { useHistory } from "react-router-dom";
 import { Button, SelectField } from "evergreen-ui";
 
 const App: React.FC = () => {
-  // Declare a new state variable, which we'll call "count"
   const [projectId, setProjectId] = useState("1");
 
   let history = useHistory();
@@ -24,7 +23,7 @@ const App: React.FC = () => {
       <div>
         <SelectField
           value={projectId}
-          width={"15%"}
+          width={"10%"}
           label="Select project:"
           onChange={(event: { target: { value: string; }; }) => handleSelectProject(event.target.value)}>
           <option value="1">1</option>

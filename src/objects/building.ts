@@ -5,15 +5,20 @@ import * as THREE from 'three';
 
 class Building extends Object {
     className: String;
+    hash: String;
     linesOfCode: number = 0;
     attributeCount: number = 0;
     methodCount: number = 0;
-    id: String;
+    id: number;
+    districtView!: THREE.Mesh;
 
-    constructor(className: String, id: String, sizeX: number, sizeY: number, sizeZ: number) {
-        super(sizeX, sizeY, sizeZ);
+    constructor(className: String, hash: String, id: number,
+        size: number, height: number, linesOfCode: number) {
+        super(size, height, size);
         this.className = className;
+        this.hash = hash;
         this.id = id;
+        this.linesOfCode = linesOfCode;
 
         this.constructObject();
     }
@@ -57,6 +62,10 @@ class Building extends Object {
             b = 255;
 
         return new Color(r, g, b);
+    }
+
+    getBuildingThreeObject(): THREE.Mesh {
+        return this.districtView;
     }
 }
 

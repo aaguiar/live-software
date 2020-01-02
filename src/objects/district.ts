@@ -6,15 +6,19 @@ import * as THREE from 'three';
 
 class District extends Object {
     packageName: String;
+    id: number;
     classCount: number = 0;
-    classes: Building[] = [];
+    classes: Building[];
     children: District[] = [];
     father: String = '';
     packageLevel: number = 0;
+    districtView!: THREE.Mesh;
 
-    constructor(packageName: String, sizeX: number, sizeY: number, sizeZ: number) {
-        super(sizeX, sizeY, sizeZ);
+    constructor(packageName: String, id: number, sizeX: number, sizeZ: number, classes: Building[], hasPackages: boolean) {
+        super(sizeX, 0, sizeZ);
         this.packageName = packageName;
+        this.id = id;
+        this.classes = classes;
         
         this.constructObject();
     }
@@ -69,6 +73,15 @@ class District extends Object {
             rgbAux = 0;
 
         return new Color(rgbAux, rgbAux, rgbAux);
+    }
+
+    getDistrictAndBuildingObjectView(): THREE.Mesh[] {
+        let result: THREE.Mesh[] = [];
+
+        result.push(this.districtView);
+        this.classes.forEach(building => result.push(building.getBuildingThreeObject()));
+
+        return result;
     }
 }
 
