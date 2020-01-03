@@ -7,6 +7,8 @@ import { getStaticDataProject, sample } from '../api/repository';
 import * as THREE from 'three';
 import ProjectJson from '../objects/interfaces/projectJson';
 
+let OrbitControls = require('three-orbit-controls')(THREE)
+
 type CanvasState = {
   project?: City,
   loadingProject: boolean
@@ -18,7 +20,9 @@ class ThreeScene extends Component<{}, CanvasState> {
   scene: THREE.Scene;
   camera: any;
   renderer: THREE.WebGLRenderer;
+  controls: any;
   frameId: number;
+  axesHelper!: THREE.AxesHelper;
 
   constructor(props: {}, state: CanvasState) {
     super(props);
@@ -44,8 +48,10 @@ class ThreeScene extends Component<{}, CanvasState> {
     this.camera.position.z = 4
     this.renderer.setClearColor('#00171f')
     this.renderer.setSize(width, height)
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     mount.appendChild(this.renderer.domElement)
-    //this.scene.add(this.cube)
+    this.axesHelper = new THREE.AxesHelper(4);
+    this.scene.add(this.axesHelper);
     this.start()
   }
 
@@ -56,7 +62,9 @@ class ThreeScene extends Component<{}, CanvasState> {
         let city: City = new City(sample.allProjectData[0]);
 
         // Add objects to scene
-        city.getThreeObjects().forEach(object => this.scene.add(object));
+        city.getThreeObjects().forEach(object => {
+          this.scene.add(object)
+        });
 
         this.setState({
           project: city,
@@ -83,8 +91,9 @@ class ThreeScene extends Component<{}, CanvasState> {
   animate = () => {
     //this.cube.rotation.x += 0.01
     //this.cube.rotation.y += 0.01
-    this.renderScene();
     this.frameId = requestAnimationFrame(this.animate);
+    this.controls.update();
+    this.renderScene();
   }
 
   renderScene = () => {

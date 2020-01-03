@@ -53,7 +53,7 @@ class City {
     getThreeObjects(): THREE.Object3D[] {
         let result: THREE.Object3D[] = [];
 
-        this.districts.forEach(district => result.concat(district.getDistrictAndBuildingObjectView()));
+        this.districts.forEach(district => result = result.concat(district.getDistrictAndBuildingObjectView()));
 
         return result;
     }

@@ -28,7 +28,7 @@ class District extends Object {
      */
     constructObject() {
         let color: Color = this.getColor(0.0);
-        this.geometry = new THREE.BoxGeometry(this.sizeX, this.sizeY, this.sizeZ);
+        this.geometry = new THREE.PlaneGeometry(this.sizeX, this.sizeY);
         this.material = new THREE.MeshBasicMaterial({
             color: new THREE.Color(color.r, color.g, color.b)
         });

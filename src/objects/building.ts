@@ -31,6 +31,7 @@ class Building extends Object {
         });
 
         this.districtView = new THREE.Mesh(this.geometry, this.material);
+        this.districtView.position.z = this.sizeZ / 2;
     }
 
     /** 

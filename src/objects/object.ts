@@ -6,9 +6,9 @@ class Object {
     sizeX: number;
     sizeY: number;
     sizeZ: number;
-    material: THREE.MeshBasicMaterial | undefined;
-    geometry: THREE.BoxGeometry | undefined;
-    districtView: THREE.Mesh | undefined;
+    material!: THREE.MeshBasicMaterial;
+    geometry!: THREE.BoxGeometry | THREE.PlaneGeometry;
+    districtView!: THREE.Mesh;
 
     constructor(sizeX: number, sizeY: number, sizeZ: number) {
         this.sizeX = sizeX;
