@@ -3,7 +3,6 @@ import * as THREE from 'three';
 import ProjectJson from './interfaces/projectJson';
 import PackageJson from './interfaces/packageJson';
 import District from './district';
-import Building from './building';
 
 class City {
     id: number;
@@ -21,30 +20,24 @@ class City {
     }
 
     createDistricts(districts: PackageJson[]): void {
-        let buildings: Building[] = [];
+        let maxVals = new MaxValues(0, 0);
+
         districts.forEach(district => {
-            district.i_classes.forEach(building => {
-                buildings.push(new Building(
-                    building.class_name,
-                    building.class_hash,
-                    building.id,
-                    building.attribute_count,
-                    building.method_count,
-                    building.lines_of_code
-                ));
-            })
+            this.getMaxPackageLevel(district, maxVals);
+        })
 
-            if (district.has_subpackages) {
-                console.log("Has sub-packages");
-            }
-
+        districts.forEach(district => {
             this.districts.push(new District(
                 district.package_name,
                 district.id,
                 4,
                 4,
-                buildings,
-                district.has_subpackages
+                district.i_classes,
+                district.has_subpackages,
+                district.packages ? district.packages : [],
+                maxVals.maxTotalPackageLevel,
+                maxVals.maxLinesOfCode,
+                1
             )
             );
         })
@@ -58,8 +51,33 @@ class City {
         return result;
     }
 
-    render() {
+    getMaxPackageLevel(districtJson: PackageJson, maxValues: MaxValues): void {
+        if (districtJson.packages) {
+            districtJson.packages.forEach(district => {
+                maxValues.maxTotalPackageLevel++;
+                this.getMaxPackageLevel(district, maxValues);
+            })
+        }
 
+        let tmpMaxLinesOfCode: number = this.getBuildingMaxLinesOfCode(districtJson);
+        maxValues.maxLinesOfCode = maxValues.maxLinesOfCode < tmpMaxLinesOfCode ? tmpMaxLinesOfCode : maxValues.maxLinesOfCode;
+    }
+
+    getBuildingMaxLinesOfCode(district: PackageJson) {
+        let buildingsLinesOfCode: number[] = district.i_classes
+        .map(building => building.lines_of_code);
+
+        return Math.max(...buildingsLinesOfCode);
+    }
+}
+
+class MaxValues {
+    maxTotalPackageLevel: number;
+    maxLinesOfCode: number;
+
+    constructor(maxTotalPackageLevel: number, maxLinesOfCode: number) {
+        this.maxTotalPackageLevel = maxTotalPackageLevel;
+        this.maxLinesOfCode = maxLinesOfCode;
     }
 }
 

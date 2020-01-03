@@ -1,0 +1,215 @@
+{
+    "allProjectData": [
+        {
+            "id": 1,
+            "num_packages": 1,
+            "project_name": "Maze",
+            "packages": [
+                {
+                    "id": 1,
+                    "package_name": "maze.cli",
+                    "class_count": 1,
+                    "has_subpackages": true,
+                    "packages": [
+                        {
+                            "id": 1,
+                            "package_name": "maze.cli.info",
+                            "class_count": 1,
+                            "has_subpackages": false,
+                            "i_classes": [
+                                {
+                                    "id": 1,
+                                    "class_name": "Interface",
+                                    "class_hash": "1f1cc557b0ed181f8fds84tyt0bc74ceed73e7bbf4278cebf4ba0e43d0f3ff465fda9c",
+                                    "qualified_name": "qualifiedName",
+                                    "lines_of_code": 100,
+                                    "attribute_count": 1,
+                                    "method_count": 1,
+                                    "class_attributes": [
+                                        {
+                                            "id": 1,
+                                            "attribute_name": "Move",
+                                            "attribute_type": "int"
+                                        }
+                                    ],
+                                    "i_methods": [
+                                        {
+                                            "id": 1,
+                                            "argument_count": 1,
+                                            "method_name": "main",
+                                            "key": "abc",
+                                            "arguments": [
+                                                {
+                                                    "id": 1,
+                                                    "argumentName": "args",
+                                                    "attribute_type": "String[]"
+                                                }
+                                            ],
+                                            "return_type": "void"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "i_classes": [
+                        {
+                            "id": 1,
+                            "class_name": "Interface",
+                            "class_hash": "1f1cc557b0ed181f8fds84tyt0bc74ceed73e7bbf4278cebf4ba0e43d0f3ff465fda9c",
+                            "qualified_name": "qualifiedName",
+                            "lines_of_code": 99,
+                            "attribute_count": 1,
+                            "method_count": 1,
+                            "class_attributes": [
+                                {
+                                    "id": 1,
+                                    "attribute_name": "Move",
+                                    "attribute_type": "int"
+                                }
+                            ],
+                            "i_methods": [
+                                {
+                                    "id": 1,
+                                    "argument_count": 1,
+                                    "method_name": "main",
+                                    "key": "abc",
+                                    "arguments": [
+                                        {
+                                            "id": 1,
+                                            "argumentName": "args",
+                                            "attribute_type": "String[]"
+                                        }
+                                    ],
+                                    "return_type": "void"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": 1,
+                    "package_name": "maze.logic",
+                    "class_count": 1,
+                    "has_subpackages": false,
+                    "i_classes": [
+                        {
+                            "id": 1,
+                            "class_name": "Interface",
+                            "class_hash": "1f1cc557b0ed181f8fds84tyt0bc74ceed73e7bbf4278cebf4ba0e43d0f3ff465fda9c",
+                            "qualified_name": "qualifiedName",
+                            "lines_of_code": 99,
+                            "attribute_count": 1,
+                            "method_count": 1,
+                            "class_attributes": [
+                                {
+                                    "id": 1,
+                                    "attribute_name": "Move",
+                                    "attribute_type": "int"
+                                }
+                            ],
+                            "i_methods": [
+                                {
+                                    "id": 1,
+                                    "argument_count": 1,
+                                    "method_name": "main",
+                                    "key": "abc",
+                                    "arguments": [
+                                        {
+                                            "id": 1,
+                                            "argumentName": "args",
+                                            "attribute_type": "String[]"
+                                        }
+                                    ],
+                                    "return_type": "void"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": 1,
+                    "package_name": "maze.api",
+                    "class_count": 1,
+                    "has_subpackages": true,
+                    "packages": [
+                        {
+                            "id": 1,
+                            "package_name": "maze.api.request",
+                            "class_count": 1,
+                            "has_subpackages": false,
+                            "i_classes": [
+                                {
+                                    "id": 1,
+                                    "class_name": "Interface",
+                                    "class_hash": "1f1cc557b0ed181f8fds84tyt0bc74ceed73e7bbf4278cebf4ba0e43d0f3ff465fda9c",
+                                    "qualified_name": "qualifiedName",
+                                    "lines_of_code": 99,
+                                    "attribute_count": 1,
+                                    "method_count": 1,
+                                    "class_attributes": [
+                                        {
+                                            "id": 1,
+                                            "attribute_name": "Move",
+                                            "attribute_type": "int"
+                                        }
+                                    ],
+                                    "i_methods": [
+                                        {
+                                            "id": 1,
+                                            "argument_count": 1,
+                                            "method_name": "main",
+                                            "key": "abc",
+                                            "arguments": [
+                                                {
+                                                    "id": 1,
+                                                    "argumentName": "args",
+                                                    "attribute_type": "String[]"
+                                                }
+                                            ],
+                                            "return_type": "void"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "i_classes": [
+                        {
+                            "id": 1,
+                            "class_name": "Interface",
+                            "class_hash": "1f1cc557b0ed181f8fds84tyt0bc74ceed73e7bbf4278cebf4ba0e43d0f3ff465fda9c",
+                            "qualified_name": "qualifiedName",
+                            "lines_of_code": 100,
+                            "attribute_count": 1,
+                            "method_count": 1,
+                            "class_attributes": [
+                                {
+                                    "id": 1,
+                                    "attribute_name": "Move",
+                                    "attribute_type": "int"
+                                }
+                            ],
+                            "i_methods": [
+                                {
+                                    "id": 1,
+                                    "argument_count": 1,
+                                    "method_name": "main",
+                                    "key": "abc",
+                                    "arguments": [
+                                        {
+                                            "id": 1,
+                                            "argumentName": "args",
+                                            "attribute_type": "String[]"
+                                        }
+                                    ],
+                                    "return_type": "void"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

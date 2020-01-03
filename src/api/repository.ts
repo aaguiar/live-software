@@ -1,4 +1,4 @@
-import sample from './sample.json';
+import sample from './sample1.json';
 
 /*
  *  /projects/:id

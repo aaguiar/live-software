@@ -6,25 +6,27 @@ import * as THREE from 'three';
 class Building extends Object {
     className: String;
     hash: String;
-    linesOfCode: number = 0;
+    linesOfCode: number;
+    ratio: number;
     attributeCount: number = 0;
     methodCount: number = 0;
     id: number;
     districtView!: THREE.Mesh;
 
     constructor(className: String, hash: String, id: number,
-        size: number, height: number, linesOfCode: number) {
+        size: number, height: number, linesOfCode: number, maxLinesOfCode: number) {
         super(size, height, size);
         this.className = className;
         this.hash = hash;
         this.id = id;
         this.linesOfCode = linesOfCode;
+        this.ratio = (maxLinesOfCode - linesOfCode) / maxLinesOfCode;
 
         this.constructObject();
     }
 
     constructObject() {
-        let color: Color = this.getColor(100);
+        let color: Color = this.getColor();
         this.geometry = new THREE.BoxGeometry(this.sizeX, this.sizeY, this.sizeZ);
         this.material = new THREE.MeshBasicMaterial({
             color: new THREE.Color(color.r, color.g, color.b)
@@ -45,22 +47,22 @@ class Building extends Object {
      * Get {@link Building} color based on its ratio in the project
      * @param ratio Ratio of the building compared to others
      */
-    getColor(ratio: number): Color {
+    getColor(): Color {
         // rgb colors
         let r: number = 0;
         let g: number = 0;
         let b: number = 0;
 
-        if (ratio < 100)
-            b = 51;
-        else if (ratio < 150)
-            b = 102;
-        else if (ratio < 230)
-            b = 153;
-        else if (ratio < 320)
-            b = 204;
-        else if (ratio >= 320)
+        if (this.ratio < 0.1)
             b = 255;
+        else if (this.ratio < 0.25)
+            b = 204;
+        else if (this.ratio < 0.5)
+            b = 153;
+        else if (this.ratio < 0.75)
+            b = 102;
+        else if (this.ratio >= 0.75)
+            b = 51;
 
         return new Color(r, g, b);
     }
