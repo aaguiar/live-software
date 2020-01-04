@@ -23,7 +23,7 @@ class City {
         let maxVals = new MaxValues(0, 0);
 
         districts.forEach(district => {
-            this.getMaxPackageLevel(district, maxVals);
+            this.getMaxValues(district, maxVals);
         })
 
         districts.forEach(district => {
@@ -51,11 +51,11 @@ class City {
         return result;
     }
 
-    getMaxPackageLevel(districtJson: PackageJson, maxValues: MaxValues): void {
+    getMaxValues(districtJson: PackageJson, maxValues: MaxValues): void {
         if (districtJson.packages) {
             districtJson.packages.forEach(district => {
                 maxValues.maxTotalPackageLevel++;
-                this.getMaxPackageLevel(district, maxValues);
+                this.getMaxValues(district, maxValues);
             })
         }
 

@@ -1,6 +1,7 @@
 import Object from './object';
 import Building from './building';
 import Color from './utils/color';
+import { sortBuilding } from './utils/sort';
 
 import * as THREE from 'three';
 import PackageJson from './interfaces/packageJson';
@@ -26,14 +27,14 @@ class District extends Object {
         this.id = id;
         this.hasPackages = hasPackages;
         this.packageLevel = packageLevel;
-        this.ratio =  (maxLevel - packageLevel) / maxLevel;
+        this.ratio = (maxLevel - packageLevel) / maxLevel;
 
         this.constructBuildings(classes, maxLineOfCode);
 
         if (this.hasPackages) {
             this.constructChilds(childrenJson, maxLevel, maxLineOfCode);
         }
-        
+
         this.constructObject();
     }
 
@@ -51,6 +52,8 @@ class District extends Object {
     }
 
     constructBuildings(buildings: ClassJson[], maxLineOfCode: number) {
+        // Sort classes by base area
+        buildings.sort(sortBuilding);
         buildings.forEach(building => {
             this.classes.push(new Building(
                 building.class_name,
@@ -94,9 +97,9 @@ class District extends Object {
      * @param ratio Ratio of the district compared to others
      */
     getColor(): Color {
-		// rgb colors
-		let rgbAux: number = 0;
-       
+        // rgb colors
+        let rgbAux: number = 0;
+
         if (this.ratio < 0.05)
             rgbAux = 255;
         else if (this.ratio < 0.10)
@@ -124,6 +127,7 @@ class District extends Object {
     getDistrictAndBuildingObjectView(): THREE.Mesh[] {
         let result: THREE.Mesh[] = [];
 
+        // TODO: Miss children
         result.push(this.districtView);
         this.classes.forEach(building => result.push(building.getBuildingThreeObject()));
 
@@ -132,7 +136,7 @@ class District extends Object {
 
     getBuildingMaxLinesOfCode() {
         let buildingsLinesOfCode: number[] = this.classes
-        .map(building => building.linesOfCode);
+            .map(building => building.linesOfCode);
 
         return Math.max(...buildingsLinesOfCode);
     }
