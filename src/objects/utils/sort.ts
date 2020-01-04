@@ -6,9 +6,9 @@ let sortBuilding = (a: ClassJson, b: ClassJson) => {
     const bandB = b.attribute_count * b.attribute_count;
 
     let c = 0;
-    if (bandA > bandB) {
+    if (bandA < bandB) {
         c = 1;
-    } else if (bandA < bandB) {
+    } else if (bandA > bandB) {
         c = -1;
     }
     return c;

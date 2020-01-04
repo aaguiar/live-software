@@ -2,6 +2,7 @@ import Object from './object';
 import Color from './utils/color';
 
 import * as THREE from 'three';
+import Point from './utils/point';
 
 class Building extends Object {
     className: String;
@@ -11,11 +12,11 @@ class Building extends Object {
     attributeCount: number = 0;
     methodCount: number = 0;
     id: number;
-    districtView!: THREE.Mesh;
 
     constructor(className: String, hash: String, id: number,
-        size: number, height: number, linesOfCode: number, maxLinesOfCode: number) {
-        super(size, height, size);
+        size: number, height: number, linesOfCode: number,
+        maxLinesOfCode: number, coordinates: Point) {
+        super(size, size, height, coordinates.x, coordinates.y, coordinates.z);
         this.className = className;
         this.hash = hash;
         this.id = id;
@@ -32,8 +33,12 @@ class Building extends Object {
             color: new THREE.Color(color.r, color.g, color.b)
         });
 
-        this.districtView = new THREE.Mesh(this.geometry, this.material);
-        this.districtView.position.z = this.sizeZ / 2;
+        this.objectView = new THREE.Mesh(this.geometry, this.material);
+        this.objectView.position.set(
+            this.coordinates.x + this.sizeX / 2,
+            this.coordinates.y + + this.sizeY / 2,
+            this.coordinates.z + this.sizeZ / 2
+        );
     }
 
     /** 
@@ -68,7 +73,7 @@ class Building extends Object {
     }
 
     getBuildingThreeObject(): THREE.Mesh {
-        return this.districtView;
+        return this.objectView;
     }
 }
 

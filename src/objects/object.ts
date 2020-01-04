@@ -8,13 +8,13 @@ class Object {
     sizeZ: number;
     material!: THREE.MeshBasicMaterial;
     geometry!: THREE.BoxGeometry | THREE.PlaneGeometry;
-    districtView!: THREE.Mesh;
+    objectView!: THREE.Mesh;
 
-    constructor(sizeX: number, sizeY: number, sizeZ: number) {
+    constructor(sizeX: number, sizeY: number, sizeZ: number, x: number,y: number, z: number) {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         this.sizeZ = sizeZ;
-        this.coordinates = new Point(sizeX, sizeY, sizeZ);
+        this.coordinates = new Point(x, y, z);
     }
 }
 

@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import ProjectJson from './interfaces/projectJson';
 import PackageJson from './interfaces/packageJson';
 import District from './district';
+import Point from './utils/point';
 
 class City {
     id: number;
@@ -14,13 +15,15 @@ class City {
         this.id = city.id;
         this.projectName = city.project_name;
         this.numDistricts = city.num_packages;
-        console.log(city);
 
         this.createDistricts(city.packages);
     }
 
     createDistricts(districts: PackageJson[]): void {
         let maxVals = new MaxValues(0, 0);
+        let districtCoordinates = new Point(0, 0, 0);
+        let districtSizeX = 4;
+        let districtSizeY = 4;
 
         districts.forEach(district => {
             this.getMaxValues(district, maxVals);
@@ -30,16 +33,18 @@ class City {
             this.districts.push(new District(
                 district.package_name,
                 district.id,
-                4,
-                4,
+                districtSizeX,
+                districtSizeY,
                 district.i_classes,
                 district.has_subpackages,
                 district.packages ? district.packages : [],
                 maxVals.maxTotalPackageLevel,
                 maxVals.maxLinesOfCode,
-                1
+                1, // package level
+                districtCoordinates
             )
             );
+            districtCoordinates.x += districtSizeX;
         })
     }
 
