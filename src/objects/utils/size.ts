@@ -1,4 +1,4 @@
-class Point {
+class Size {
     x: number = 0;
     y: number = 0;
     z: number = 0;
@@ -10,4 +10,4 @@ class Point {
     }
 }
 
-export default Point;
+export default Size;

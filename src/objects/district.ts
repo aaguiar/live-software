@@ -7,6 +7,7 @@ import * as THREE from 'three';
 import PackageJson from './interfaces/packageJson';
 import ClassJson from './interfaces/classJson';
 import Point from './utils/point';
+import Size from './utils/size';
 
 const pack = require('bin-pack');
 
@@ -21,22 +22,26 @@ class District extends Object {
     father: String = '';
     packageLevel: number = 0;
 
-    constructor(packageName: String, id: number, sizeX: number, sizeY: number,
-        classes: ClassJson[], hasPackages: boolean, childrenJson: PackageJson[],
-        maxLevel: number, maxLineOfCode: number, packageLevel: number, coordinates: Point) {
-        super(sizeX, sizeY, 0, coordinates.x, coordinates.y, coordinates.z);
+    constructor(packageName: String, id: number, classes: ClassJson[],
+        hasPackages: boolean, childrenJson: PackageJson[], maxLevel: number,
+        maxLineOfCode: number, packageLevel: number, coordinates: Point) {
+        super(coordinates.x, coordinates.y, coordinates.z);
         this.packageName = packageName;
         this.id = id;
         this.hasPackages = hasPackages;
         this.packageLevel = packageLevel;
         this.ratio = (maxLevel - packageLevel) / maxLevel;
 
+        // 1º Construct buildings
         this.constructBuildings(classes, maxLineOfCode);
 
+        // 2º Construct packages
         if (this.hasPackages) {
             this.constructChilds(childrenJson, maxLevel, maxLineOfCode);
         }
 
+        // 3º Construct objects view, since we calculate district size
+        // and coordinates based on its content (TODO, call method constructObject for each district and also call constructObject for each building)
         this.constructObject();
     }
 
@@ -45,16 +50,16 @@ class District extends Object {
      */
     constructObject() {
         let color: Color = this.getColor();
-        this.geometry = new THREE.PlaneGeometry(this.sizeX, this.sizeY);
+        this.geometry = new THREE.PlaneGeometry(this.size.x, this.size.y);
         this.material = new THREE.MeshBasicMaterial({
             color: new THREE.Color(color.r, color.g, color.b)
         });
 
         this.objectView = new THREE.Mesh(this.geometry, this.material);
         this.objectView.position.set(
-            this.coordinates.x + this.sizeX / 2,
-            this.coordinates.y + this.sizeY / 2,
-            0
+            this.coordinates.x + this.size.x / 2,
+            this.coordinates.y + this.size.y / 2,
+            0 // TODO
         );
     }
 
@@ -64,7 +69,7 @@ class District extends Object {
         // Sort classes by base area
         buildings.sort(sortBuilding);
 
-        // Get sizes for all buildings and calculate layout
+        // Get sizes of all buildings and calculate layout
         let sizes = buildings.map(building => {
             return {
                 width: building.attribute_count,
@@ -73,22 +78,22 @@ class District extends Object {
         });
         const layout = pack(sizes);
 
-        let streetX = 1;
-        let streetY = 1;
+        let numStreetX = 1;
+        let numStreetY = 1;
         buildings.forEach((building, i) => {
             if (i > 0) {
                 if (layout.items[i].x > layout.items[i - 1].x) {
-                    streetX++;
+                    numStreetX++;
                 }
 
                 if (layout.items[i].y > layout.items[i - 1].y) {
-                    streetY++;
+                    numStreetY++;
                 }
             }
 
             buildingCoordinates = new Point(
-                this.coordinates.x + layout.items[i].x + 0.2 * streetX,
-                this.coordinates.y + layout.items[i].y + 0.2 * streetY,
+                this.coordinates.x + layout.items[i].x + 0.2 * numStreetX,
+                this.coordinates.y + layout.items[i].y + 0.2 * numStreetY,
                 this.coordinates.z
             );
 
@@ -104,8 +109,11 @@ class District extends Object {
             ));
         });
 
-        this.sizeX = layout.width + 0.2 * (streetX + 1);
-        this.sizeY = layout.height + 0.2 * (streetY + 1);
+        this.size = new Size(
+            layout.width + 0.2 * (numStreetX + 1),
+            layout.height + 0.2 * (numStreetY + 1),
+            0
+        );
     }
 
     constructChilds(districts: PackageJson[], maxLevel: number, maxLineOfCode: number) {
@@ -114,8 +122,6 @@ class District extends Object {
             this.childrens.push(new District(
                 district.package_name,
                 district.id,
-                4,
-                4,
                 district.i_classes,
                 district.has_subpackages,
                 district.packages ? district.packages : [],
@@ -131,7 +137,7 @@ class District extends Object {
      * Area is the x * y
      */
     getArea(): number {
-        return this.sizeX * this.sizeZ;
+        return this.size.x * this.size.y;
     }
 
     /**
