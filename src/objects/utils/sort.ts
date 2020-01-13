@@ -1,5 +1,6 @@
 import ClassJson from '../interfaces/classJson';
 import District from '../district';
+import Object from '../object';
 
 let sortBuilding = (a: ClassJson, b: ClassJson) => {
     const bandA = a.attribute_count * a.attribute_count;
@@ -14,7 +15,7 @@ let sortBuilding = (a: ClassJson, b: ClassJson) => {
     return c;
 }
 
-let sortDistrict = (a: District, b: District) => {
+let sortDistrict = (a: Object, b: Object) => {
     const distA = a.size.x * a.size.y;
     const distB = b.size.x * b.size.y;
 
