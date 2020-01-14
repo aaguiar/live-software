@@ -8,6 +8,12 @@ class Point {
         this.y = y;
         this.z = z;
     }
+
+    set(x: number, y: number, z: number) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
 }
 
 export default Point;

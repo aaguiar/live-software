@@ -34,10 +34,16 @@ class Building extends Object {
         });
 
         this.objectView = new THREE.Mesh(this.geometry, this.material);
+    }
+
+    /**
+     * Sets the building object position in canvas
+     */
+    setBuildingPosition(districtCoordinates: Point) {
         this.objectView.position.set(
-            this.coordinates.x + this.size.x / 2,
-            this.coordinates.y + + this.size.y / 2,
-            this.coordinates.z + this.size.z / 2
+            this.coordinates.x + districtCoordinates.x + this.size.x / 2,
+            this.coordinates.y + districtCoordinates.y + this.size.y / 2,
+            this.coordinates.z + districtCoordinates.z + this.size.z / 2
         );
     }
 

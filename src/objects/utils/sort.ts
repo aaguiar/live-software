@@ -1,5 +1,4 @@
 import ClassJson from '../interfaces/classJson';
-import District from '../district';
 import Object from '../object';
 
 let sortBuilding = (a: ClassJson, b: ClassJson) => {

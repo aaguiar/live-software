@@ -11,21 +11,23 @@ import Size from './utils/size';
 
 const pack = require('bin-pack');
 
+const DISTRICT_DEFAULT_Z_SIZE: number = 0.1;
+
 class District extends Object {
     packageName: String;
     id: number;
     classCount: number = 0;
     classes: Building[] = [];
     hasPackages: boolean;
-    ratio: number; objectView!: THREE.Mesh;
+    ratio: number; objectView!: THREE.Mesh
     childrens: District[] = [];
     father: String = '';
     packageLevel: number = 0;
 
     constructor(packageName: String, id: number, classes: ClassJson[],
         hasPackages: boolean, childrenJson: PackageJson[], maxLevel: number,
-        maxLineOfCode: number, packageLevel: number, coordinates: Point) {
-        super(coordinates.x, coordinates.y, coordinates.z);
+        maxLineOfCode: number, packageLevel: number) {
+        super();
         this.packageName = packageName;
         this.id = id;
         this.hasPackages = hasPackages;
@@ -41,8 +43,28 @@ class District extends Object {
         }
 
         // 3º Construct objects view, since we calculate district size
-        // and coordinates based on its content (TODO, call method constructObject for each district and also call constructObject for each building)
         this.constructObject();
+    }
+
+    setDistrictPosition() {
+        // set district position
+        this.objectView.position.set(
+            this.coordinates.x + this.size.x / 2,
+            this.coordinates.y + this.size.y / 2,
+            this.coordinates.z // TODO
+        );
+
+        // set buildings position
+        this.classes
+            .forEach(building => building.setBuildingPosition(this.coordinates));
+    }
+
+    setCoordinates(x: number, y: number) {
+        this.coordinates = new Point(x, y, this.getSizeZ());
+    }
+
+    getSizeZ(): number {
+        return this.packageLevel / 10 / 2;
     }
 
     /**
@@ -50,17 +72,12 @@ class District extends Object {
      */
     constructObject() {
         let color: Color = this.getColor();
-        this.geometry = new THREE.PlaneGeometry(this.size.x, this.size.y);
+        this.geometry = new THREE.BoxGeometry(this.size.x, this.size.y, this.size.z);
         this.material = new THREE.MeshBasicMaterial({
             color: new THREE.Color(color.r, color.g, color.b)
         });
 
         this.objectView = new THREE.Mesh(this.geometry, this.material);
-        this.objectView.position.set(
-            this.coordinates.x + this.size.x / 2,
-            this.coordinates.y + this.size.y / 2,
-            0 // TODO
-        );
     }
 
     constructBuildings(buildings: ClassJson[], maxLineOfCode: number) {
@@ -92,9 +109,9 @@ class District extends Object {
             }
 
             buildingCoordinates = new Point(
-                this.coordinates.x + layout.items[i].x + 0.2 * numStreetX,
-                this.coordinates.y + layout.items[i].y + 0.2 * numStreetY,
-                this.coordinates.z
+                layout.items[i].x + 0.2 * numStreetX,
+                layout.items[i].y + 0.2 * numStreetY,
+                this.getSizeZ()
             );
 
             this.classes.push(new Building(
@@ -112,12 +129,11 @@ class District extends Object {
         this.size = new Size(
             layout.width + 0.2 * (numStreetX + 1),
             layout.height + 0.2 * (numStreetY + 1),
-            0
+            DISTRICT_DEFAULT_Z_SIZE // package level represents the district size in Z axis
         );
     }
 
     constructChilds(districts: PackageJson[], maxLevel: number, maxLineOfCode: number) {
-        let districtCoordinates = new Point(0, 0, 0);
         districts.forEach(district => {
             this.childrens.push(new District(
                 district.package_name,
@@ -127,12 +143,12 @@ class District extends Object {
                 district.packages ? district.packages : [],
                 maxLevel,
                 maxLineOfCode,
-                this.packageLevel + 1,
-                districtCoordinates
+                this.packageLevel + 1
             )
             );
         })
     }
+
     /**
      * Area is the x * y
      */
