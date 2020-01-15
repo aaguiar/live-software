@@ -18,6 +18,7 @@
     "react-loading": "^2.0.3",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.3.0",
+    "rgb-hex": "^3.0.0",
     "three": "^0.111.0",
     "three-orbit-controls": "^82.1.0",
     "typescript": "^3.7.4"

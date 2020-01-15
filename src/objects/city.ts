@@ -53,7 +53,7 @@ class City {
      */
     createDistricts(districts: PackageJson[]): void {
         const districtLevel: number = 1;
-        let maxVals = new MaxValues(0, 0);
+        let maxVals = new MaxValues(1, 0);
 
         // 1st Get max lines of code and max depht of packages
         districts.forEach(district => {
@@ -141,17 +141,31 @@ class City {
      * @param maxValues Used to transport the maxes calculated for all districts.
      */
     getMaxValues(districtJson: PackageJson, maxValues: MaxValues): void {
-        if (districtJson.packages) {
-            districtJson.packages.forEach(district => {
-                maxValues.maxTotalPackageLevel++;
-                this.getMaxValues(district, maxValues);
-            })
-        }
+        let tmpPackageLevel: number = this.getMaxPackageLevel(districtJson, maxValues.maxTotalPackageLevel);
+        maxValues.maxTotalPackageLevel = maxValues.maxTotalPackageLevel < tmpPackageLevel ?
+            tmpPackageLevel :
+            maxValues.maxTotalPackageLevel;
 
         let tmpMaxLinesOfCode: number = this.getBuildingMaxLinesOfCode(districtJson);
         maxValues.maxLinesOfCode = maxValues.maxLinesOfCode < tmpMaxLinesOfCode ?
             tmpMaxLinesOfCode :
             maxValues.maxLinesOfCode;
+    }
+
+    getMaxPackageLevel(districtJson: PackageJson, maxLevel: number) {
+        let resultLevel: number = 0;
+        if (districtJson.packages) {
+            maxLevel++;
+            districtJson.packages.forEach(district => {
+                resultLevel = this.getMaxPackageLevel(district, maxLevel);
+
+                if (resultLevel > maxLevel) {
+                    maxLevel = resultLevel;
+                }
+            })
+        }
+
+        return maxLevel;
     }
 
     /**
