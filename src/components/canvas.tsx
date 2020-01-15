@@ -48,6 +48,8 @@ class ThreeScene extends Component<{}, CanvasState> {
     this.camera.position.z = 4
     this.renderer.setClearColor('#00171f')
     this.renderer.setSize(width, height)
+    this.renderer.gammaFactor = 2.2
+    this.renderer.gammaOutput = true
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     mount.appendChild(this.renderer.domElement)
     this.axesHelper = new THREE.AxesHelper(4);

@@ -4,6 +4,7 @@ import Color from './utils/color';
 import { sortObject } from './utils/sort';
 
 import * as THREE from 'three';
+import rgbHex from 'rgb-hex';
 import PackageJson from './interfaces/packageJson';
 import ClassJson from './interfaces/classJson';
 import Point from './utils/point';
@@ -49,8 +50,6 @@ class District extends Object {
     setDistrictPosition(x: number, y: number) {
         // set district coordinates
         this.setCoordinates(x, y);
-
-        console.log(x, y);
 
         // set district position
         this.objectView.position.set(
@@ -122,7 +121,7 @@ class District extends Object {
         let color: Color = this.getColor();
         this.geometry = new THREE.BoxGeometry(this.size.x, this.size.y, this.size.z);
         this.material = new THREE.MeshBasicMaterial({
-            color: new THREE.Color(color.r, color.g, color.b)
+            color: new THREE.Color(`#${rgbHex(color.r, color.g, color.b)}`)
         });
 
         this.objectView = new THREE.Mesh(this.geometry, this.material);
@@ -159,10 +158,6 @@ class District extends Object {
 
         let districtComponents: Object[] = [];
         districtComponents = districtComponents.concat(this.childrens, this.classes);
-
-        if (this.packageLevel === 2) {
-            console.log(districtComponents);
-        }
 
         // Sort district components by area (district and buildings)
         districtComponents.sort(sortObject);

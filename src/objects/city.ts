@@ -60,6 +60,8 @@ class City {
             this.getMaxValues(district, maxVals);
         })
 
+        console.log(maxVals);
+
         // 2nd Construct districts configurations
         districts.forEach(district => {
             this.districts.push(new District(
@@ -128,8 +130,6 @@ class City {
         let result: THREE.Object3D[] = [];
 
         this.districts.forEach(district => result = result.concat(district.getDistrictAndBuildingObjectView()));
-
-        console.log(result);
 
         return result;
     }

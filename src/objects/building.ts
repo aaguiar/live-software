@@ -1,8 +1,9 @@
 import Object from './object';
 import Color from './utils/color';
+import Point from './utils/point';
 
 import * as THREE from 'three';
-import Point from './utils/point';
+import rgbHex from 'rgb-hex';
 
 class Building extends Object {
     className: String;
@@ -30,8 +31,9 @@ class Building extends Object {
         let color: Color = this.getColor();
         this.geometry = new THREE.BoxGeometry(this.size.x, this.size.y, this.size.z);
         this.material = new THREE.MeshBasicMaterial({
-            color: new THREE.Color(color.r, color.g, color.b)
+            color: new THREE.Color(`#${rgbHex(color.r, color.g, color.b)}`)
         });
+        this.material.color.convertSRGBToLinear();
 
         this.objectView = new THREE.Mesh(this.geometry, this.material);
     }
