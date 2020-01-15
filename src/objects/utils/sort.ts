@@ -14,7 +14,7 @@ let sortBuilding = (a: ClassJson, b: ClassJson) => {
     return c;
 }
 
-let sortDistrict = (a: Object, b: Object) => {
+let sortObject = (a: Object, b: Object) => {
     const distA = a.size.x * a.size.y;
     const distB = b.size.x * b.size.y;
 
@@ -30,5 +30,5 @@ let sortDistrict = (a: Object, b: Object) => {
 
 export {
     sortBuilding,
-    sortDistrict
+    sortObject
 }

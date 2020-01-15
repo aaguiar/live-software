@@ -3,8 +3,7 @@ import * as THREE from 'three';
 import ProjectJson from './interfaces/projectJson';
 import PackageJson from './interfaces/packageJson';
 import District from './district';
-
-import { sortDistrict } from './utils/sort';
+import { sortObject } from './utils/sort';
 
 const pack = require('bin-pack');
 
@@ -93,14 +92,12 @@ class City {
                 }
             }
 
-            district.setCoordinates(
+            // Set district and respective buildings
+            // and childrens position
+            district.setDistrictPosition(
                 layout.items[i].x + 0.2 * numStreetX,
                 layout.items[i].y + 0.2 * numStreetY // all districts are at the ground level (z = 0)
             );
-
-            // Set district and respective buildings
-            // and childrens position
-            district.setDistrictPosition();
         });
     }
 
@@ -110,7 +107,7 @@ class City {
      */
     constructDistrictLayout() {
         // Sort classes by base area
-        this.districts.sort(sortDistrict);
+        this.districts.sort(sortObject);
 
         // Get sizes for all districts and calculate layout
         let sizes = this.districts.map(building => {
@@ -131,6 +128,8 @@ class City {
         let result: THREE.Object3D[] = [];
 
         this.districts.forEach(district => result = result.concat(district.getDistrictAndBuildingObjectView()));
+
+        console.log(result);
 
         return result;
     }

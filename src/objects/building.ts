@@ -15,8 +15,8 @@ class Building extends Object {
 
     constructor(className: String, hash: String, id: number,
         size: number, height: number, linesOfCode: number,
-        maxLinesOfCode: number, coordinates: Point) {
-        super(coordinates.x, coordinates.y, coordinates.z, size, size, height);
+        maxLinesOfCode: number) {
+        super(size, size, height);
         this.className = className;
         this.hash = hash;
         this.id = id;
@@ -39,12 +39,22 @@ class Building extends Object {
     /**
      * Sets the building object position in canvas
      */
-    setBuildingPosition(districtCoordinates: Point) {
-        this.objectView.position.set(
-            this.coordinates.x + districtCoordinates.x + this.size.x / 2,
-            this.coordinates.y + districtCoordinates.y + this.size.y / 2,
-            this.coordinates.z + districtCoordinates.z + this.size.z / 2
+    setBuildingPosition(coordinates: Point) {
+        this.setCoordinates(
+            coordinates.x,
+            coordinates.y,
+            coordinates.z
         );
+
+        this.objectView.position.set(
+            this.coordinates.x + this.size.x / 2,
+            this.coordinates.y + this.size.y / 2,
+            this.coordinates.z + this.size.z / 2
+        );
+    }
+
+    setCoordinates(x: number, y: number, z: number) {
+        this.coordinates = new Point(x, y, z);
     }
 
     /** 

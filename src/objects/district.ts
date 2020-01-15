@@ -1,7 +1,7 @@
 import Object from './object';
 import Building from './building';
 import Color from './utils/color';
-import { sortBuilding } from './utils/sort';
+import { sortObject } from './utils/sort';
 
 import * as THREE from 'three';
 import PackageJson from './interfaces/packageJson';
@@ -19,7 +19,7 @@ class District extends Object {
     classCount: number = 0;
     classes: Building[] = [];
     hasPackages: boolean;
-    ratio: number; objectView!: THREE.Mesh
+    ratio: number; objectView!: THREE.Mesh;
     childrens: District[] = [];
     father: String = '';
     packageLevel: number = 0;
@@ -34,29 +34,77 @@ class District extends Object {
         this.packageLevel = packageLevel;
         this.ratio = (maxLevel - packageLevel) / maxLevel;
 
-        // 1º Construct buildings
-        this.constructBuildings(classes, maxLineOfCode);
-
-        // 2º Construct packages
+        // 1º Construct packages
         if (this.hasPackages) {
             this.constructChilds(childrenJson, maxLevel, maxLineOfCode);
         }
+
+        // 2º Construct buildings
+        this.constructBuildings(classes, maxLineOfCode);
 
         // 3º Construct objects view, since we calculate district size
         this.constructObject();
     }
 
-    setDistrictPosition() {
+    setDistrictPosition(x: number, y: number) {
+        // set district coordinates
+        this.setCoordinates(x, y);
+
+        console.log(x, y);
+
         // set district position
         this.objectView.position.set(
             this.coordinates.x + this.size.x / 2,
             this.coordinates.y + this.size.y / 2,
-            this.coordinates.z // TODO
+            this.coordinates.z
         );
 
-        // set buildings position
-        this.classes
-            .forEach(building => building.setBuildingPosition(this.coordinates));
+        let districtComponents: Object[] = [];
+        districtComponents = districtComponents.concat(this.childrens, this.classes);
+
+        // Sort district components by area (district and buildings)
+        districtComponents.sort(sortObject);
+
+        // Get sizes of all buildings and calculate layout
+        let sizes = districtComponents.map(object => {
+            return {
+                width: object.size.x,
+                height: object.size.y
+            }
+        });
+        const layout = pack(sizes);
+
+        let numStreetX = 1;
+        let numStreetY = 1;
+        let buildingCoordinates: Point;
+        districtComponents.forEach((object: Object, i) => {
+            if (i > 0) {
+                if (layout.items[i].x > layout.items[i - 1].x) {
+                    numStreetX++;
+                }
+
+                if (layout.items[i].y > layout.items[i - 1].y) {
+                    numStreetY++;
+                }
+            }
+
+            if (object instanceof Building) {
+                buildingCoordinates = new Point(
+                    this.coordinates.x + layout.items[i].x + 0.2 * numStreetX,
+                    this.coordinates.y + layout.items[i].y + 0.2 * numStreetY,
+                    this.getSizeZ()
+                );
+
+                (object as Building).setBuildingPosition(buildingCoordinates);
+            } else if (object instanceof District) {
+                // Set district and respective buildings
+                // and childrens position
+                (object as District).setDistrictPosition(
+                    this.coordinates.x + layout.items[i].x + 0.2 * numStreetX,
+                    this.coordinates.y + layout.items[i].y + 0.2 * numStreetY, // all districts are at the ground level (z = 0)
+                )
+            }
+        });
     }
 
     setCoordinates(x: number, y: number) {
@@ -80,59 +128,6 @@ class District extends Object {
         this.objectView = new THREE.Mesh(this.geometry, this.material);
     }
 
-    constructBuildings(buildings: ClassJson[], maxLineOfCode: number) {
-        let buildingCoordinates: Point;
-
-        // Sort classes by base area
-        buildings.sort(sortBuilding);
-
-        // Get sizes of all buildings and calculate layout
-        let sizes = buildings.map(building => {
-            return {
-                width: building.attribute_count,
-                height: building.attribute_count
-            }
-        });
-        const layout = pack(sizes);
-
-        let numStreetX = 1;
-        let numStreetY = 1;
-        buildings.forEach((building, i) => {
-            if (i > 0) {
-                if (layout.items[i].x > layout.items[i - 1].x) {
-                    numStreetX++;
-                }
-
-                if (layout.items[i].y > layout.items[i - 1].y) {
-                    numStreetY++;
-                }
-            }
-
-            buildingCoordinates = new Point(
-                layout.items[i].x + 0.2 * numStreetX,
-                layout.items[i].y + 0.2 * numStreetY,
-                this.getSizeZ()
-            );
-
-            this.classes.push(new Building(
-                building.class_name,
-                building.class_hash,
-                building.id,
-                building.attribute_count,
-                building.method_count,
-                building.lines_of_code,
-                maxLineOfCode,
-                buildingCoordinates
-            ));
-        });
-
-        this.size = new Size(
-            layout.width + 0.2 * (numStreetX + 1),
-            layout.height + 0.2 * (numStreetY + 1),
-            DISTRICT_DEFAULT_Z_SIZE // package level represents the district size in Z axis
-        );
-    }
-
     constructChilds(districts: PackageJson[], maxLevel: number, maxLineOfCode: number) {
         districts.forEach(district => {
             this.childrens.push(new District(
@@ -147,6 +142,59 @@ class District extends Object {
             )
             );
         })
+    }
+
+    constructBuildings(buildings: ClassJson[], maxLineOfCode: number) {
+        buildings.forEach(building => {
+            this.classes.push(new Building(
+                building.class_name,
+                building.class_hash,
+                building.id,
+                building.attribute_count,
+                building.method_count,
+                building.lines_of_code,
+                maxLineOfCode
+            ));
+        });
+
+        let districtComponents: Object[] = [];
+        districtComponents = districtComponents.concat(this.childrens, this.classes);
+
+        if (this.packageLevel === 2) {
+            console.log(districtComponents);
+        }
+
+        // Sort district components by area (district and buildings)
+        districtComponents.sort(sortObject);
+
+        // Get sizes of all buildings and calculate layout
+        let sizes = districtComponents.map(object => {
+            return {
+                width: object.size.x,
+                height: object.size.y
+            }
+        });
+        const layout = pack(sizes);
+
+        let numStreetX = 1;
+        let numStreetY = 1;
+        for (let i = 0; i < districtComponents.length; i++) {
+            if (i > 0) {
+                if (layout.items[i].x > layout.items[i - 1].x) {
+                    numStreetX++;
+                }
+
+                if (layout.items[i].y > layout.items[i - 1].y) {
+                    numStreetY++;
+                }
+            }
+        }
+
+        this.size = new Size(
+            layout.width + 0.2 * (numStreetX + 1),
+            layout.height + 0.2 * (numStreetY + 1),
+            DISTRICT_DEFAULT_Z_SIZE // package level represents the district size in Z axis
+        );
     }
 
     /**
@@ -191,9 +239,14 @@ class District extends Object {
     getDistrictAndBuildingObjectView(): THREE.Mesh[] {
         let result: THREE.Mesh[] = [];
 
-        // TODO: Miss children
         result.push(this.objectView);
-        this.classes.forEach(building => result.push(building.getBuildingThreeObject()));
+        this.classes.forEach(building =>
+            result.push(building.getBuildingThreeObject()));
+
+        if (this.hasPackages) {
+            this.childrens.forEach(district =>
+                result = result.concat(district.getDistrictAndBuildingObjectView()));
+        }
 
         return result;
     }

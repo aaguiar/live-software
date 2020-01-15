@@ -9,13 +9,13 @@ abstract class Object {
     geometry!: THREE.BoxGeometry | THREE.PlaneGeometry;
     objectView!: THREE.Mesh;
 
-    constructor(x?: number, y?: number, z?: number, sizeX?: number, sizeY?: number, sizeZ?: number) {
-        if (sizeX !== undefined && sizeY !== undefined && sizeZ !== undefined) {
-            this.size = new Size(sizeX, sizeY, sizeZ);
-        }
-
+    constructor(sizeX?: number, sizeY?: number, sizeZ?: number, x?: number, y?: number, z?: number) {
         if (x !== undefined && y !== undefined && z !== undefined) {
             this.coordinates = new Point(x, y, z);
+        }
+
+        if (sizeX !== undefined && sizeY !== undefined && sizeZ !== undefined) {
+            this.size = new Size(sizeX, sizeY, sizeZ);
         }
     }
 }
