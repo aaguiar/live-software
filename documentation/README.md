@@ -64,6 +64,6 @@ We decoupled the logic part with the visualization, as well the api interaction,
 
 ---
 
-## Evolution - contributions to open-cx
+## Evolution - contributions
 
 Many different approaches are being taken to evolve the way we visualize software. This projects aims to contribute to the live software development community and motivate new studies applied in different contexts, e.g., visualization of functional languages, physical architectures, etc.
